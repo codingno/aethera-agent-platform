@@ -1480,7 +1480,7 @@ async function runRealGeminiPipeline(brdText, apiKey) {
   };
 
   try {
-    printConsoleLog(`[Orchestrator System] Gemini API Key validated. Initiating live multi-agent pipeline using model: gemini-2.5-flash (Gemini 3.5 Flash)...`, "SYSTEM", "var(--color-primary)");
+    printConsoleLog(`[Orchestrator System] Gemini API Key validated. Initiating live multi-agent pipeline using model: gemini-3.5-flash...`, "SYSTEM", "var(--color-primary)");
 
     // 1. PM Agent
     updateOverlay("PM Agent compiling requirements...", "Analyzing BRD features and user flows...");
@@ -1594,8 +1594,8 @@ function cleanGeneratedCode(code) {
 }
 
 async function callGemini(prompt, apiKey) {
-  // Call official Gemini API using model: gemini-2.5-flash (Gemini 3.5 Flash)
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  // Call official Gemini API using model: gemini-3.5-flash
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
