@@ -700,7 +700,7 @@ const PRESETS = {
             '<span>Stok</span> ' +
             '<span class="badge-stock ' + stockClass + '">' + stockLabel + '</span>' +
           '</div>' +
-          '<button class="btn-action" style="background: ' + (p.stock === 0 ? '#1e293b' : 'var(--primary)') + '" ' + (p.stock === 0 ? 'disabled' : '') + ' onclick="addToCart(\'' + p.id + '\')">' +
+          '<button class="btn-action" style="background: ' + (p.stock === 0 ? '#1e293b' : 'var(--primary)') + '" ' + (p.stock === 0 ? 'disabled' : '') + ' onclick="addToCart(' + "'" + p.id + "'" + ')">' +
             (p.stock === 0 ? 'Stok Habis' : 'Tambahkan Ke Troli') +
           '</button>';
         container.appendChild(card);
@@ -759,7 +759,7 @@ const PRESETS = {
         row.innerHTML = 
           '<div>' +
             '<div class="cart-item-name">' + item.name + ' (x' + item.qty + ')</div>' +
-            '<div style="font-size: 0.7rem; color: var(--text-muted); cursor:pointer;" onclick="removeFromCart(\'' + item.id + '\')">Hapus item</div>' +
+            '<div style="font-size: 0.7rem; color: var(--text-muted); cursor:pointer;" onclick="removeFromCart(' + "'" + item.id + "'" + ')">Hapus item</div>' +
           '</div>' +
           '<span class="cart-item-price">Rp ' + (item.price * item.qty).toLocaleString('id-ID') + '</span>';
         container.appendChild(row);
@@ -870,7 +870,7 @@ const PRESETS = {
           '</div>' +
           '<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">' +
             '<span class="status-badge-badge ' + ord.status.toLowerCase() + '">' + ord.status + '</span>' +
-            (ord.status === 'PENDING' ? '<button class="btn-action" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 2px 6px; font-size: 0.65rem;" onclick="cancelPendingOrder(\'' + ord.id + '\')">Cancel</button>' : '') +
+            (ord.status === 'PENDING' ? '<button class="btn-action" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 2px 6px; font-size: 0.65rem;" onclick="cancelPendingOrder(' + "'" + ord.id + "'" + ')">Cancel</button>' : '') +
           '</div>';
         container.appendChild(row);
       });
