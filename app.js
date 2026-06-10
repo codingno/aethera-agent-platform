@@ -1100,6 +1100,7 @@ const codeDisplayBlock = document.getElementById('code-display-block');
 const btnCopyCode = document.getElementById('btn-copy-code');
 const btnDownloadBundle = document.getElementById('btn-download-bundle');
 const geminiApiKeyInput = document.getElementById('gemini-api-key');
+const geminiModelSelect = document.getElementById('gemini-model-select');
 
 // ==========================================
 // INITIAL SETUP & RENDER FUNCTIONS
@@ -1421,8 +1422,14 @@ btnTriggerOrchestration.addEventListener('click', () => {
 });
 
 function triggerMultiAgentPipeline() {
-  // Execute Gemini serverless engine automatically
-  runSimulationPipeline();
+  const apiKey = geminiApiKeyInput ? geminiApiKeyInput.value.trim() : "";
+  const brdText = brdInputBox.value.trim();
+
+  if (apiKey) {
+    runRealGeminiPipeline(brdText, apiKey);
+  } else {
+    runSimulationPipeline();
+  }
 }
 
 function runSimulationPipeline() {
@@ -1480,7 +1487,8 @@ async function runRealGeminiPipeline(brdText, apiKey) {
   };
 
   try {
-    printConsoleLog(`[Orchestrator System] Gemini API Key validated. Initiating live multi-agent pipeline using model: gemini-3.5-flash...`, "SYSTEM", "var(--color-primary)");
+    const activeModel = geminiModelSelect ? geminiModelSelect.value : "gemini-3.5-flash";
+    printConsoleLog(`[Orchestrator System] Gemini API Key validated. Initiating live multi-agent pipeline using model: ${activeModel}...`, "SYSTEM", "var(--color-primary)");
 
     // 1. PM Agent
     updateOverlay("PM Agent compiling requirements...", "Analyzing BRD features and user flows...");
@@ -1495,7 +1503,7 @@ async function runRealGeminiPipeline(brdText, apiKey) {
     
     Provide a concise, high-level summary of your analysis, target pages, and feature checklist. Make it look like a high-tech terminal output.`;
     
-    const pmAnalysis = await callGemini(pmPrompt, apiKey);
+    const pmAnalysis = await callGemini(pmPrompt, apiKey, activeModel);
     printConsoleLog(`[PM Agent] Structured specification output compiled successfully:\n\n${pmAnalysis}`, "Product Manager", "var(--color-agent-pm)");
 
     // 2. Architect Agent
@@ -1510,7 +1518,7 @@ async function runRealGeminiPipeline(brdText, apiKey) {
     Design the page layout structure, select a modern high-end HSL-based dark color palette (specifying CSS variables), and map out responsive components.
     Provide a brief, professional summary of your architectural blueprint and color tokens.`;
 
-    const archDesign = await callGemini(archPrompt, apiKey);
+    const archDesign = await callGemini(archPrompt, apiKey, activeModel);
     printConsoleLog(`[Architect Agent] Architectural blueprint compiled successfully:\n\n${archDesign}`, "System Architect", "var(--color-agent-arch)");
 
     // 3. Developer Agent
@@ -1536,7 +1544,7 @@ async function runRealGeminiPipeline(brdText, apiKey) {
     6. DO NOT write placeholder code or cut corners. Write the full, completed codebase.
     7. Output ONLY the raw HTML source code. Do not wrap it in markdown code blocks like \`\`\`html. Just begin with <!DOCTYPE html> and end with </html>.`;
 
-    let generatedCode = await callGemini(devPrompt, apiKey);
+    let generatedCode = await callGemini(devPrompt, apiKey, activeModel);
     generatedCode = cleanGeneratedCode(generatedCode);
     
     printConsoleLog(`[Dev Agent] Code generation successful. Displaying raw codebase sample...`, "Frontend Engineer", "var(--color-agent-fe)", generatedCode.substring(0, 300) + "\n\n/* ... compiled codebase active ... */");
@@ -1554,7 +1562,7 @@ async function runRealGeminiPipeline(brdText, apiKey) {
     Audit the code for HTML/CSS syntax errors, responsive layouts, and interactive script exceptions. If there are minor flaws, fix them.
     Output ONLY the final, complete, corrected HTML source code. Do not wrap it in markdown code blocks like \`\`\`html. Just begin with <!DOCTYPE html> and end with </html>.`;
 
-    let finalCode = await callGemini(qaPrompt, apiKey);
+    let finalCode = await callGemini(qaPrompt, apiKey, activeModel);
     finalCode = cleanGeneratedCode(finalCode);
 
     printConsoleLog(`[QA Agent] Visual compliance checklist: PASSED.\nSecurity audit: SECURE.\nCode integrity verification: COMPLETE. Approving codebase release!`, "QA Auditor", "var(--color-agent-qa)");
@@ -1593,9 +1601,9 @@ function cleanGeneratedCode(code) {
   return cleaned.trim();
 }
 
-async function callGemini(prompt, apiKey) {
-  // Call official Gemini API using model: gemini-3.5-flash
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;
+async function callGemini(prompt, apiKey, model) {
+  const activeModel = model || 'gemini-3.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${apiKey}`;
   const response = await fetch(url, {
     method: "POST",
     headers: {

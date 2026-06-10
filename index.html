@@ -51,9 +51,20 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:8px;">
           <input type="password" id="gemini-api-key" placeholder="Enter Gemini API Key (AIzaSy...)" style="width: 100%; padding: 10px 12px; background: #1a2233; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 8px; color: #fff; font-size: 0.75rem; font-family: monospace; outline: none; box-sizing: border-box; transition: all 0.3s ease;" onfocus="this.style.borderColor='#00f2fe'; this.style.boxShadow='0 0 8px rgba(0,242,254,0.15)';" onblur="this.style.borderColor='rgba(0,242,254,0.2)'; this.style.boxShadow='none';">
+          
+          <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+            <label style="font-size:0.6rem; color:rgba(255,255,255,0.4); text-transform:uppercase; font-weight:700; letter-spacing:0.5px; padding-left:2px;">Target Model</label>
+            <select id="gemini-model-select" style="width: 100%; padding: 8px 10px; background: #1a2233; border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 8px; color: #fff; font-size: 0.75rem; outline: none; box-sizing: border-box; cursor: pointer; font-family: monospace; transition: all 0.3s ease;" onfocus="this.style.borderColor='#00f2fe';" onblur="this.style.borderColor='rgba(0, 242, 254, 0.2)';">
+              <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+            </select>
+          </div>
+
           <div style="display:flex; align-items:center; gap:6px; font-size:0.65rem; color:#10b981; padding: 2px 4px;">
             <div style="width:5px; height:5px; border-radius:50%; background:#10b981; box-shadow:0 0 6px #10b981; animation: pulse 1.5s infinite;"></div>
-            <span>Ready for Gemini 3.5 Flash Integration</span>
+            <span>Ready for Gemini Cloud Integration</span>
           </div>
         </div>
       </div>
